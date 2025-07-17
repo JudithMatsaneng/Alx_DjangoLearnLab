@@ -1,12 +1,24 @@
-from .models import Author, Book, Library, Librarian
+from django.apps import apps
 
-def get_books_by_author(author_name):
-    return Book.objects.filter(author__name=author_name)
+Author = apps.get_model('relationship_app', 'Author')
+Book = apps.get_model('relationship_app', 'Book')
 
-def get_books_in_library(library_name):
-    library = Library.objects.get(name=library_name)
-    return library.books.all()
+def query_books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)
+        books = Book.objects.filter(author=author)
+        return books
+    except Author.DoesNotExist:
+        return None
 
-def get_librarian_for_library(library_name):
-    library = Library.objects.get(name=library_name)
-    return Librarian.objects.get(library=library)
+# Example usage
+if __name__ == "__main__":
+    author_name = "John Doe"  # Replace with the actual author name
+    books = query_books_by_author(author_name)
+    if books:
+        print(f"Books by {author_name}:")
+        for book in books:
+            print(book.title)
+    else:
+        print(f"No books found for author {author_name}")
+
