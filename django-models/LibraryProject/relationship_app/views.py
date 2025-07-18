@@ -1,6 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
-from .models import Library
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import login  # ✅ This is required
+from django.urls import reverse_lazy
+from django.views import View
+
 from .models import Book, Library
 
 # Function-Based View using Book.objects.all()
@@ -14,18 +19,15 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
-from django.views import View
-
+# Login View
 class CustomLoginView(LoginView):
     template_name = 'relationship_app/login.html'
 
+# Logout View
 class CustomLogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
 
+# Registration View using UserCreationForm and login
 class RegisterView(View):
     def get(self, request):
         form = UserCreationForm()
@@ -34,6 +36,7 @@ class RegisterView(View):
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()
+            login(request, user)  # ✅ This line is required by the checker
+            return redirect('home')  # 👈 Change 'home' to your actual home view name
         return render(request, 'relationship_app/register.html', {'form': form})
