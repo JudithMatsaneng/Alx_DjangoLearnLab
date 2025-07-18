@@ -20,13 +20,13 @@ urlpatterns = [
     # ✅ Role-based views
     path('admin-view/', views.admin_view, name='admin_view'),
     path('librarian-view/', views.librarian_view, name='librarian_view'),
-    path('member-view/', views.member_view, name='member_view'),]
-   
-urlpatterns += [
-    # ✅ Book management views-SECURED VIEWS
-    path('book/add/', BookCreateView.as_view(), name='add_book'),
-    path('book/<int:pk>/edit/', BookUpdateView.as_view(), name='edit_book'),
-    path('book/<int:pk>/delete/', BookDeleteView.as_view(), name='delete_book'),
-]
+    path('member-view/', views.member_view, name='member_view'),
+    
+    # ✅ Custom secured book actions
+    path('add_book/', views.add_book, name='add_book'),
+    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),
+    path('delete_book/<int:pk>/', views.delete_book, name='delete_book'),
+    
+  ]
 
 
