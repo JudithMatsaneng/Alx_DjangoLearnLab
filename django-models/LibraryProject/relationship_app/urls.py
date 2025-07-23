@@ -1,10 +1,13 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView
+from .views import list_books, LibraryDetailView, add_book, edit_book, delete_book, register, CustomLoginView, CustomLogoutView, RegisterView
+
 
 
 urlpatterns = [
-    path('books/', views.list_books, name='list_books'),
+    # ✅ Basic views for your project
+    path('books/', list_books, name='list_books'),
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 
     # ✅ Auth views for checker
