@@ -35,3 +35,22 @@ Tested by assigning users to each group and logging in to verify view access and
 - Admin: `bookshelf/admin.py`
 - Docs: `advanced_features_and_security/README.md`
 
+# Django Security Measures
+
+## HTTPS and Secure Redirects
+- Enforced `SECURE_SSL_REDIRECT = True` to ensure all traffic is encrypted.
+- Configured HSTS for 1 year with preload and subdomain inclusion.
+
+## Secure Cookies
+- Set `SESSION_COOKIE_SECURE` and `CSRF_COOKIE_SECURE` to True.
+
+## Headers
+- Enabled:
+  - `X_FRAME_OPTIONS = DENY`
+  - `SECURE_CONTENT_TYPE_NOSNIFF = True`
+  - `SECURE_BROWSER_XSS_FILTER = True`
+
+## Deployment
+- SSL certificate installed via Nginx for HTTPS support.
+
+
