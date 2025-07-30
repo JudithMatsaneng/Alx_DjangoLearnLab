@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import permission_required
 from .models import Library 
 from .models import Book, Library, Author
 from django.views.generic.detail import DetailView
@@ -133,3 +134,34 @@ def delete_book(request, pk):
         book.delete()
         return redirect('list_books')
     return render(request, 'relationship_app/confirm_delete.html', {'book': book})
+
+@permission_required('relationship_app.can_create', raise_exception=True)
+def create_book(request):
+    # logic to create book
+    ...
+
+@permission_required('relationship_app.can_edit', raise_exception=True)
+def edit_book(request, book_id):
+    # logic to edit book
+    ...
+
+@permission_required('relationship_app.can_delete', raise_exception=True)
+def delete_book(request, book_id):
+    # logic to delete book
+    ...
+
+@permission_required('relationship_app.can_view', raise_exception=True)
+def list_books(request):
+    books = Book.objects.all()
+    return render(request, 'relationship_app/book_list.html', {'books': books})
+
+from django.core.exceptions import PermissionDenied
+
+def safe_permission_required(perm):
+    def decorator(view_func):
+        def _wrapped_view(request, *args, **kwargs):
+            if not request.user.has_perm(perm):
+                raise PermissionDenied("You do not have permission to access this page.")
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
