@@ -125,3 +125,39 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'relationship_app.CustomUser'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+# SECURITY SETTINGS
+
+DEBUG = False  # NEVER True in production!
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Prevent content sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS filtering
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent site from being loaded in an iframe
+X_FRAME_OPTIONS = 'DENY'
+
+# Only allow HTTPS
+SECURE_SSL_REDIRECT = True  # if using HTTPS
+
+# CSP (Optional for now - full setup in Step 4)
+# Add CSP middleware later
+# CSRF settings
+CSRF_COOKIE_HTTPONLY = True  # Prevents JavaScript access to CSRF cookie
+
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+# Example policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+

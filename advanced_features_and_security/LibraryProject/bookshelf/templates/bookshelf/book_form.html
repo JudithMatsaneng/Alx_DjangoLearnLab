@@ -15,3 +15,8 @@
 </body>
 </html>
 
+<form method="post">
+  {% csrf_token %}
+  <!-- your form fields -->
+  <input type="submit" value="Submit">
+</form>
