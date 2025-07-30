@@ -183,3 +183,7 @@ X_FRAME_OPTIONS = "DENY"
 
 # Enable browser XSS filtering
 SECURE_BROWSER_XSS_FILTER = True
+
+# Support for HTTPS behind a proxy (e.g., Heroku, Nginx, AWS ELB)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
