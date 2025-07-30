@@ -51,6 +51,7 @@ def delete_book(request, pk):
 
 from django.shortcuts import render
 from .models import Book
+from .forms import ExampleForm
 from .forms import BookSearchForm
 
 def book_list(request):
