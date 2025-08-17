@@ -14,14 +14,18 @@
                 <li><a href="{% url 'posts' %}">Blog Posts</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'tag_list' %}">Tags</a></li>
             </ul>
         </nav>
+        <form method="GET" action="{% url 'post_search' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search posts..." required>
+            <button type="submit">Search</button>
+        </form>
     </header>
 
     <div class="content">
         {% block content %}
-        <!-- Page-specific content goes here -->
-        {% endblock %}
+            {% endblock %}
     </div>
 
     <footer>
