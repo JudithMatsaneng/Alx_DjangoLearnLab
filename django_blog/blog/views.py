@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from .forms import CommentForm
+from .forms import PostForm
 from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -81,8 +82,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "blog/post_form.html"
     form_class = PostForm
+success_url = '/posts/'
 
-    def form_valid(self, form):
+def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
@@ -91,6 +93,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     template_name = "blog/post_form.html"
     fields = ["title", "content"]
+    success_url= '/posts/'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
