@@ -19,7 +19,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('password2')
-        # ✅ using Django’s built-in create_user
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email'),
@@ -27,7 +26,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             bio=validated_data.get('bio', ''),
             profile_picture=validated_data.get('profile_picture', None)
         )
+        Token.objects.create(user=user)
         return user
+
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
