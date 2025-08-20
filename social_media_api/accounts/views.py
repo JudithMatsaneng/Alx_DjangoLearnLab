@@ -30,3 +30,16 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    try:
+        target = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    if target == request.user:
+        return Response({"detail": "You cannot unfollow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+    request.user.following.remove(target)
+    return Response({"detail": f"You unfollowed {target.username}."}, status=status.HTTP_200_OK)
