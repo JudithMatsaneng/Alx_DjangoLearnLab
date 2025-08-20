@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions,generics
+from rest_framework.permissions import IsAuthenticated
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 
@@ -34,6 +35,7 @@ class FeedView(generics.ListAPIView):
 
     def get_queryset(self):
         followed_users = self.request.user.following.all()
-        return Post.objects.filter(author__in=followed_users).order_by("-created_at")
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
 
 
